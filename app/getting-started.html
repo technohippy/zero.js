@@ -1,0 +1,228 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <title>zerojs</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <link rel="shortcut icon" href="/favicon.ico">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <!-- build:css styles/vendor.css -->
+        <!-- bower:css -->
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="bower_components/google-code-prettify/src/prettify.css">
+        <!-- endbower -->
+        <!-- endbuild -->
+        <!-- build:css(.tmp) styles/main.css -->
+        <link rel="stylesheet" href="styles/main.css">
+        <!--link rel="stylesheet" href="styles/customize.css"-->
+        <!-- endbuild -->
+    </head>
+    <body>
+        <!--[if lt IE 10]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+
+        <div class="container">
+            <div class="header">
+                <ul class="nav nav-pills pull-right">
+                    <li><a href="index.html">Home</a></li>
+                    <li class="active"><a href="#">Getting Started</a></li>
+                    <li><a href="demos.html">Demo</a></li>
+                    <li><a href="scripts/zero.min.js" target="_blank">Download</a></li>
+                </ul>
+                <h3 class="text-muted">zerojs</h3>
+            </div>
+
+            <div class="row marketing">
+                <section>
+                    <h4>Basis</h4>
+
+                    <pre class="prettyprint">
+&lt;script src="zero.min.js">&lt;/script>
+&lt;script>
+function main() {
+  // ...snip...
+}
+document.addEventListener('DOMContentLoaded', main, false);
+&lt;/script>
+</pre>
+
+                    <p>First of all, you should load zero.js script and define a function which is invoked when all DOM contents are loaded. In the function, named <code>main</code> in this case, you will add codes to draw the origin in the no-dimensional world.</p>
+                </section>
+
+                <section>
+                    <h4>Scene</h4>
+
+                    <pre class="prettyprint">
+var scene = new ZERO.Scene();
+</pre>
+
+                    <p><code>Scene</code> should be the first object to be instantiated. This represents the whole world in zero.js. In the class, you will set all things required to constract the world such as objects, lights and a camera.</p>
+
+                </section>
+
+                <section>
+                    <h4>Geometry, Material and Mesh</h4>
+
+                    <pre class="prettyprint">
+var geometry = new ZERO.PointGeometry();
+var material = new ZERO.MeshBasicMaterial({color: 0xff0000});
+var mesh = new ZERO.Mesh(geometry, material);
+scene.add(mesh);
+</pre>
+
+                    <p>Objects in zero.js consist of three components: geometry, material and mesh. 
+                        <ul>
+                            <li>A geometry represents a shape of an object. In the zero.js world there is only one Geometry named <code>PointGeometry</code> representing the origin. <code>PointGeometry</code> has no attribute such as size and position because located in the no-dimensional world.</li>
+                            <li>A material represents an apperance of an object. Currently only <code>MeshBasicMaterial</code> is available.</li>
+                            <li><code>Mesh</code> represents an object and is a container of a geometry and a material.</li>
+                        </ul>
+                    </p>
+                </section>
+
+                <section>
+                    <h4>Camera</h4>
+                    <pre class="prettyprint">
+var width = 500;
+var height = 500;
+var fov = 30;
+var aspect = width / height;
+var near = 0.1;
+var far = 1000;
+var camera = new ZERO.PerspectiveCamera(fov, aspect, near, far);
+camera.position.set(500);
+</pre>
+                    <p>To draw an object, you should decide the place from where you would like to see the object. The place is called a camera. Unfortunately a no-dimensional world is such a perfect world where one is all and all is one, in other words there is no boundary to distinguish observees from observers. This is because a camera exists in one-dimensional world. The properties of <code>PerspectiveCamera</code> are illustrated in the figure below.</p>
+                    <img src="images/perspectivecamera.png" width="50%" />
+                </section>
+
+                <section>
+                    <h4>Light</h4>
+                    <pre class="prettyprint">
+var directionalLight = new ZERO.DirectionalLight(0xffff00);
+directionalLight.position.set(1.0);
+scene.add(directionalLight);
+</pre>
+                    <p>Although the world has been constructed, you can see nothing without light. Let's say "let there be light."</p>
+                </section>
+
+                <section>
+                    <h4>Renderer</h4>
+                    <pre class="prettyprint">
+var renderer = new ZERO.WebGLRenderer();
+renderer.setSize(width, height);
+document.body.appendChild(renderer.domElement);
+renderer.render(scene, camera);
+</pre>
+
+                  <p>At last, use <code>WebGLRenderer</code> to render the world on WebGL. The renderer's size is, in short, the size of a canvas element. If you would like to animate the world, </p>
+                </section>
+
+                <section>
+                    <h4>Collect Up</h4>
+
+                    <p>Let's see the whole for confirmation.</p>
+
+                    <pre class="prettyprint">
+&lt;html>
+&lt;head>
+  &lt;script src="zero.min.js">&lt;/script>
+  &lt;script>
+  function main() {
+    var scene = new ZERO.Scene();
+
+    var geometry = new ZERO.PointGeometry();
+    var material = new ZERO.MeshBasicMaterial({color: 0xff0000});
+    var mesh = new ZERO.Mesh(geometry, material);
+    scene.add(mesh);
+    
+    var width = 500;
+    var height = 500;
+    var fov = 30;
+    var aspect = width / height;
+    var near = 0.1;
+    var far = 1000;
+    var camera = new ZERO.PerspectiveCamera(fov, aspect, near, far);
+    camera.position.set(500);
+
+    var directionalLight = new ZERO.DirectionalLight(0xffff00);
+    directionalLight.position.set(1.0);
+    scene.add(directionalLight);
+
+    var renderer = new ZERO.WebGLRenderer();
+    renderer.setSize(width, height);
+    document.body.appendChild(renderer.domElement);
+
+    renderer.render(scene, camera);
+  }
+  document.addEventListener('DOMContentLoaded', main, false);
+  &lt;/script>
+&lt;/head>
+&lt;body>
+&lt;/body>
+&lt;/html>
+</pre>
+                </section>
+
+                <section>
+                    <h4>Hooray!!</h4>
+
+                    <p>It is surprising that such a perfect world can be constructed by this small and concise code, isn't it?</p>
+
+                    <img src="images/zero1.png" alc="result" />
+
+                    <p>There are some demos on the <a href="demos.html">Demo</a> page.</p>
+
+                </section>
+            </div>
+
+            <div class="footer">
+                <p>&copy; Ando Yasushi</p>
+            </div>
+
+        </div>
+
+
+        <!-- build:js scripts/vendor.js -->
+        <!-- bower:js -->
+        <script src="bower_components/jquery/dist/jquery.js"></script>
+        <!-- endbower -->
+        <!-- endbuild -->
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-XXXXX-X');ga('send','pageview');
+        </script>
+
+        <!-- build:js scripts/plugins.js -->
+        <script src="bower_components/bootstrap/js/affix.js"></script>
+        <script src="bower_components/bootstrap/js/alert.js"></script>
+        <script src="bower_components/bootstrap/js/dropdown.js"></script>
+        <script src="bower_components/bootstrap/js/tooltip.js"></script>
+        <script src="bower_components/bootstrap/js/modal.js"></script>
+        <script src="bower_components/bootstrap/js/transition.js"></script>
+        <script src="bower_components/bootstrap/js/button.js"></script>
+        <script src="bower_components/bootstrap/js/popover.js"></script>
+        <script src="bower_components/bootstrap/js/carousel.js"></script>
+        <script src="bower_components/bootstrap/js/scrollspy.js"></script>
+        <script src="bower_components/bootstrap/js/collapse.js"></script>
+        <script src="bower_components/bootstrap/js/tab.js"></script>
+        <script src="bower_components/google-code-prettify/src/prettify.js"></script>
+        <!-- endbuild -->
+
+        <!-- build:js({app,.tmp}) scripts/main.js -->
+        <script src="scripts/main.js"></script>
+        <script>prettyPrint();</script>
+        <!-- endbuild -->
+</body>
+</html>

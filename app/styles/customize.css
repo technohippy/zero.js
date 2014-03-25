@@ -1,0 +1,9 @@
+.jumbotron {
+  background-image:url(../images/title.png);
+}
+.jumbotron h1 {
+  color:white;
+}
+.jumbotron .lead {
+  color:#ccc;
+}
